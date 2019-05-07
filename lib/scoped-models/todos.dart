@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_scoped_model_and_listview_example/models/todo.dart';
+import './base.dart';
 
-class TodosModel extends Model {
+class TodosModel extends BaseModel {
   List<Todo> _todoList = [];
 
   List<Todo> get todos => _todoList;
@@ -22,11 +22,12 @@ class TodosModel extends Model {
   }
 
   void fetchTodos(int userId) {
-    http
-        .get('https://jsonplaceholder.typicode.com/todos?userId=$userId')
-        .then((response) {
-      final List<dynamic> jsonResponse = json.decode(response.body);
-      _todos = jsonResponse.map((data) => Todo.fromJson(data)).toList();
-    });
+    loading = true;
+    http.get('https://jsonplaceholder.typicode.com/todos?userId=$userId')
+      .then((response) {
+        final List<dynamic> jsonResponse = json.decode(response.body);
+        _todos = jsonResponse.map((data) => Todo.fromJson(data)).toList();
+        loading = false;
+      });
   }
 }

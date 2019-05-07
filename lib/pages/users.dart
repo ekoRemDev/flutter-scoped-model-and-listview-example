@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_scoped_model_and_listview_example/scoped-models/users.dart';
+import 'package:flutter_scoped_model_and_listview_example/widgets/loading.dart';
 import 'package:flutter_scoped_model_and_listview_example/models/user.dart';
 import 'package:flutter_scoped_model_and_listview_example/pages/todos.dart';
 
@@ -36,6 +37,9 @@ class _UsersPageState extends State<UsersPage> {
   _buildListView() {
     return ScopedModelDescendant<UsersModel>(
       builder: (BuildContext context, Widget child, UsersModel model) {
+        if (model.loading) {
+          return UiLoading();
+        }
         final userList = model.users;
         return ListView.builder(
           itemBuilder: (context, index) => InkWell(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_scoped_model_and_listview_example/scoped-models/todos.dart';
+import 'package:flutter_scoped_model_and_listview_example/widgets/loading.dart';
 import 'package:flutter_scoped_model_and_listview_example/models/user.dart';
 import 'package:flutter_scoped_model_and_listview_example/models/todo.dart';
 
@@ -57,6 +58,9 @@ class _TodosPageState extends State<TodosPage> {
   _buildListView() {
     return ScopedModelDescendant<TodosModel>(
       builder: (BuildContext context, Widget child, TodosModel model) {
+        if (model.loading) {
+          return UiLoading();
+        }
         final todoList = model.todos;
         return ListView.builder(
           itemBuilder: (context, index) => _buildListTile(todoList[index]),
